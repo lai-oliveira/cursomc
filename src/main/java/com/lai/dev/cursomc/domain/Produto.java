@@ -2,10 +2,14 @@ package com.lai.dev.cursomc.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
+
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-
+@Entity
+@Table(name = "Produto")
 public class Produto implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -13,9 +17,17 @@ public class Produto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
+    @Column
     private String nome;
-    private BigDecimal preco;
+    @Column
+    private Double preco;
+    @ManyToMany
+    @JoinTable(name = "PRODUTO_CATEGORIA",
+            joinColumns = @JoinColumn(name = "produto_id"),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id")
+    )
+    private List<Categoria> categorias = new ArrayList<>();
 
 
 
@@ -23,17 +35,17 @@ public class Produto implements Serializable {
 
    }
 
-    public Produto(long id, String nome, BigDecimal preco) {
+    public Produto(Integer id, String nome, Double preco) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -45,12 +57,20 @@ public class Produto implements Serializable {
         this.nome = nome;
     }
 
-    public BigDecimal getPreco() {
+    public Double getPreco() {
         return preco;
     }
 
-    public void setPreco(BigDecimal preco) {
+    public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 
     @Override
